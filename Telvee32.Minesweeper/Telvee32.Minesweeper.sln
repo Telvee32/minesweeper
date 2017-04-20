@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telvee32.Minesweeper.Common", "Telvee32.Minesweeper.Common\Telvee32.Minesweeper.Common.csproj", "{466DEB63-1A8D-4EC5-A7CF-1001DAA78D61}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telvee32.Minesweeper.ConsoleUI", "Telvee32.Minesweeper.ConsoleUI\Telvee32.Minesweeper.ConsoleUI.csproj", "{591307D0-9C54-44CC-8932-655813E8C1EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telvee32.Minesweeper.UI", "Telvee32.Minesweeper.UI\Telvee32.Minesweeper.UI.csproj", "{A00582F6-721E-40E7-AE3B-613540B63169}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{466DEB63-1A8D-4EC5-A7CF-1001DAA78D61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{466DEB63-1A8D-4EC5-A7CF-1001DAA78D61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{466DEB63-1A8D-4EC5-A7CF-1001DAA78D61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{591307D0-9C54-44CC-8932-655813E8C1EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{591307D0-9C54-44CC-8932-655813E8C1EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{591307D0-9C54-44CC-8932-655813E8C1EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{591307D0-9C54-44CC-8932-655813E8C1EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A00582F6-721E-40E7-AE3B-613540B63169}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A00582F6-721E-40E7-AE3B-613540B63169}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A00582F6-721E-40E7-AE3B-613540B63169}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A00582F6-721E-40E7-AE3B-613540B63169}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
