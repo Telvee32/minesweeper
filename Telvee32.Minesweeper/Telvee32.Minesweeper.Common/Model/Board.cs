@@ -29,8 +29,8 @@ namespace Telvee32.Minesweeper.Common.Model
 
         public Tile[,] Tiles { get; private set; }
 
-        public int XLength { get; set; }
-        public int YLength { get; set; }
+        public int XLength { get; private set; }
+        public int YLength { get; private set; }
 
         public int Flags { get; set; }
 
@@ -42,9 +42,9 @@ namespace Telvee32.Minesweeper.Common.Model
             // initialise Tiles
             Tiles = new Tile[XLength, YLength];
 
-            for(int i = 0; i < Tiles.GetLength(0); i++)
+            for(int i = 0; i < XLength; i++)
             {
-                for (int j = 0; j < Tiles.GetLength(1); j++)
+                for (int j = 0; j < YLength; j++)
                 {
                     Tiles[i, j] = new Tile
                     {
@@ -54,9 +54,9 @@ namespace Telvee32.Minesweeper.Common.Model
                 }
             }
 
-            for (int i = 0; i < Tiles.GetLength(0); i++)
+            for (int i = 0; i < XLength; i++)
             {
-                for (int j = 0; j < Tiles.GetLength(1); j++)
+                for (int j = 0; j < YLength; j++)
                 {
                     SetNeighbours(Tiles[i, j]);
                 }

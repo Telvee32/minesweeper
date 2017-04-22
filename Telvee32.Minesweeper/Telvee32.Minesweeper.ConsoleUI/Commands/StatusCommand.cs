@@ -2,7 +2,7 @@
 
 namespace Telvee32.Minesweeper.ConsoleUI.Commands
 {
-    class StatusCommand : Command
+    public class StatusCommand : Command
     {
         public StatusCommand()
         {

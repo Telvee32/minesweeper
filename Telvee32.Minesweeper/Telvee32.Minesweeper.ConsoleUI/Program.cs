@@ -213,7 +213,7 @@ namespace Telvee32.Minesweeper.ConsoleUI
 
             // penultimate line
             Console.Write("*   ");
-            for (int i = 0; i < board.Tiles.GetLength(0); i++)
+            for (int i = 0; i < board.XLength; i++)
             {
                 Console.Write("  ");
             }
@@ -222,7 +222,7 @@ namespace Telvee32.Minesweeper.ConsoleUI
 
             // final line
             Console.Write("* * ");
-            for (int i = 0; i < board.Tiles.GetLength(0); i++)
+            for (int i = 0; i < board.XLength; i++)
             {
                 Console.Write("* ");
             }
