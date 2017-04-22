@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Telvee32.Minesweeper.Common.Exceptions;
 
 namespace Telvee32.Minesweeper.Common.Model
 {
@@ -39,10 +40,12 @@ namespace Telvee32.Minesweeper.Common.Model
         public void Open()
         {
             if (IsOpen) return;
+            IsOpen = true;
 
             if (HasBomb)
             {
                 // FAIL
+                throw new BombException(XPosition, YPosition);
             }
 
             /*

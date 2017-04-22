@@ -37,6 +37,9 @@ namespace Telvee32.Minesweeper.ConsoleUI.Commands
             },
             {
                 CommandType.Help, "Help. CommandName."
+            },
+            {
+                CommandType.Status, "Status. X, Y."
             }
         };
     }

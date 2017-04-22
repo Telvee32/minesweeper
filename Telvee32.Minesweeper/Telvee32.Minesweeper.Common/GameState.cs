@@ -1,4 +1,6 @@
-﻿using Telvee32.Minesweeper.Common.Model;
+﻿using Telvee32.Minesweeper.Common.Communication;
+using Telvee32.Minesweeper.Common.Exceptions;
+using Telvee32.Minesweeper.Common.Model;
 
 namespace Telvee32.Minesweeper.Common
 {
@@ -6,10 +8,15 @@ namespace Telvee32.Minesweeper.Common
     {
         public Board Board { get; private set; }
 
-        public void NewGame(int xLength, int yLength, int bombs)
+        public GameStatus Status { get; private set; }
+
+        public int Flags => Board.Flags;
+
+        public void NewGame(NewGameRequest request)
         {
             Board = new Board();
-            Board.Build();
+            Status = GameStatus.Ok;
+            Board.Build(request.XLength, request.YLength, request.Bombs);
         }
 
         public void QuitGame()
@@ -19,12 +26,32 @@ namespace Telvee32.Minesweeper.Common
 
         public void EndGame()
         {
+            Board = null;
+        }
 
+        // TODO - add tile manipulation methods
+
+        public void OpenTile(int x, int y)
+        {
+            try
+            {
+                Board.OpenTile(x, y);
+            }
+            catch (BombException)
+            {
+                Status = GameStatus.Fail;
+                throw;
+            }
+        }
+
+        public void FlagTile(int x, int y, bool flag)
+        {
+            Board.FlagTile(x, y, flag);
         }
     }
 
-    public enum EndGameReason
+    public enum GameStatus
     {
-        Win, Fail, Quit
+        Win, Fail, Ok
     }
 }

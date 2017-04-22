@@ -176,6 +176,32 @@ namespace Telvee32.Minesweeper.ConsoleUI
 
                     break;
                 }
+                case CommandType.Status:
+                {
+                    command = new StatusCommand();
+                    Dictionary<string, object> requiredArgs = command.GetRequiredArguments();
+
+                    if (args.Length != requiredArgs.Count)
+                    {
+                        throw new ArgumentException($"Command type {type} requires {requiredArgs.Count} arguments.");
+                    }
+
+                    if (!int.TryParse(args[0], out int x))
+                    {
+                        throw new ArgumentException($"Parameter {CommandKeys.XPosition} must be an integer.");
+                    }
+                    if (!int.TryParse(args[1], out int y))
+                    {
+                        throw new ArgumentException($"Parameter {CommandKeys.YPosition} must be an integer.");
+                    }
+
+                    requiredArgs[CommandKeys.XPosition] = x;
+                    requiredArgs[CommandKeys.YPosition] = y;
+
+                    command.Build(requiredArgs);
+
+                    break;
+                }
             }
 
             return command;
