@@ -103,6 +103,8 @@ namespace Telvee32.Minesweeper.ConsoleUI
                 }
                 case NewCommand n:
                 {
+                    if ((n.XLength > 100 || n.XLength <= 0) || (n.YLength > 100 || n.YLength <= 0))
+                        throw new IndexOutOfRangeException("Board X and Y size must be no less than 1 and no greater than 100.");
                     _gameState = new GameState();
                     _gameState.NewGame(new NewGameRequest
                     {
@@ -202,16 +204,23 @@ namespace Telvee32.Minesweeper.ConsoleUI
 
             // top line
             Console.Write("* * ");
-            for (int i = 0; i < board.XLength; i++)
+            for (int x = 0; x < board.XLength; x++)
             {
-                Console.Write("* ");
+                if(x < 10)
+                {
+                    Console.Write($"{x} ");
+                }
+                else
+                {
+                    Console.Write(x);
+                }
             }
             Console.Write("* *");
             Console.WriteLine();
 
             // second line
             Console.Write("*   ");
-            for (int i = 0; i < board.XLength; i++)
+            for (int x = 0; x < board.XLength; x++)
             {
                 Console.Write("  ");
             }
@@ -221,7 +230,14 @@ namespace Telvee32.Minesweeper.ConsoleUI
             // actual board
             for (int y = 0; y < board.YLength; y++)
             {
-                Console.Write("*   ");
+                if (y < 10)
+                {
+                    Console.Write($"{y}   ");
+                }
+                else
+                {
+                    Console.Write($"{y}  ");
+                }
                 for (int x = 0; x < board.XLength; x++)
                 {
                     var tile = board.Tiles[x, y];
@@ -230,13 +246,20 @@ namespace Telvee32.Minesweeper.ConsoleUI
                     Console.Write($"{details.label} ");
                     Console.ResetColor();
                 }
-                Console.Write("  *");
+                if (y < 10)
+                {
+                    Console.Write($"  {y}");
+                }
+                else
+                {
+                    Console.Write($" {y}");
+                }
                 Console.WriteLine();
             }
 
             // penultimate line
             Console.Write("*   ");
-            for (int i = 0; i < board.XLength; i++)
+            for (int x = 0; x < board.XLength; x++)
             {
                 Console.Write("  ");
             }
@@ -245,9 +268,16 @@ namespace Telvee32.Minesweeper.ConsoleUI
 
             // final line
             Console.Write("* * ");
-            for (int i = 0; i < board.XLength; i++)
+            for (int x = 0; x < board.XLength; x++)
             {
-                Console.Write("* ");
+                if (x < 10)
+                {
+                    Console.Write($"{x} ");
+                }
+                else
+                {
+                    Console.Write(x);
+                }
             }
             Console.Write("* *");
             Console.WriteLine();
