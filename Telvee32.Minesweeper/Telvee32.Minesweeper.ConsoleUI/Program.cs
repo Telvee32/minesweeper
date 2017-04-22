@@ -124,10 +124,13 @@ namespace Telvee32.Minesweeper.ConsoleUI
                     finally
                     {
                         PrintBoard(_gameState.Board);
-                        _gameState.EndGame();
-                        _gameState = null;
 
-                        Console.WriteLine("You lose. Type new to start again.");
+                        if (_gameState.Status == GameStatus.Fail)
+                        {
+                            _gameState.EndGame();
+                            _gameState = null;
+                            Console.WriteLine("You lose. Type new to start again.");
+                        }                        
                     }
 
                     break;
@@ -172,11 +175,22 @@ namespace Telvee32.Minesweeper.ConsoleUI
                     break;
                 }
             }
+
+            if(_gameState != null && _gameState.Status == GameStatus.Win)
+            {
+                _gameState.EndGame();
+                _gameState = null;
+
+                Console.WriteLine("You win. Type new to start again.");
+            }
         }
 
         private void PrintBoard(Board board)
         {
             Console.WriteLine();
+            Console.WriteLine($"Flags: {_gameState.Flags}");
+            Console.WriteLine();
+
             // top line
             Console.Write("* * ");
             for (int i = 0; i < board.XLength; i++)

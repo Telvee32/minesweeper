@@ -52,6 +52,6 @@ namespace Telvee32.Minesweeper.Common
 
     public enum GameStatus
     {
-        Win, Fail, Ok
+        Undefined, Win, Fail, Ok
     }
 }
