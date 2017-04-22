@@ -1,6 +1,7 @@
 ﻿using Telvee32.Minesweeper.Common.Communication;
 using Telvee32.Minesweeper.Common.Exceptions;
 using Telvee32.Minesweeper.Common.Model;
+using System.Linq;
 
 namespace Telvee32.Minesweeper.Common
 {
@@ -42,11 +43,22 @@ namespace Telvee32.Minesweeper.Common
                 Status = GameStatus.Fail;
                 throw;
             }
+            CheckWin();
         }
 
         public void FlagTile(int x, int y, bool flag)
         {
             Board.FlagTile(x, y, flag);
+            CheckWin();
+        }
+
+        private void CheckWin()
+        {
+            if (Flags == 0 && Board.Tiles.Cast<Tile>()
+                .All(t => (t.IsOpen && !t.HasBomb) || (!t.IsOpen && t.HasBomb && t.HasFlag)))
+            {
+                Status = GameStatus.Win;
+            }
         }
     }
 

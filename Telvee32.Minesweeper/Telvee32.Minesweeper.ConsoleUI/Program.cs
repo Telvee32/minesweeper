@@ -68,9 +68,18 @@ namespace Telvee32.Minesweeper.ConsoleUI
                         throw new InvalidOperationException("No game active. Please use the new command to start a game.");
                     }
 
-                    _gameState.FlagTile(f.XPos, f.YPos, true);
-
-                    PrintBoard(_gameState.Board);
+                    try
+                    {
+                        _gameState.FlagTile(f.XPos, f.YPos, true);
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    finally
+                    {
+                        PrintBoard(_gameState.Board);
+                    }                    
 
                     break;
                 }

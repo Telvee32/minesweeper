@@ -96,8 +96,21 @@ namespace Telvee32.Minesweeper.Common.Model
 
         public void FlagTile(int x, int y, bool flag)
         {
-            // TODO - validate
+            if (!IsValidIndex(x, y)) throw new IndexOutOfRangeException($"No such tile at ({x}, {y}).");
+
             var tile = Tiles[x, y];
+
+            if (tile.IsOpen)
+            {
+                if (flag)
+                {
+                    throw new InvalidOperationException($"Cannot flag tile at ({x}. {y}) as it is already open.");
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Cannot unflag tile at ({x}. {y}) as it is already open.");
+                }
+            }
 
             if (flag != tile.HasFlag)
             {
@@ -116,17 +129,27 @@ namespace Telvee32.Minesweeper.Common.Model
 
         public void OpenTile(int x, int y)
         {
-            if (IsValidIndex(x, y))
-            {
-                try
+            if (!IsValidIndex(x, y)) throw new IndexOutOfRangeException($"No such tile at ({x}, {y}).");
+
+            var tile = Tiles[x, y];
+
+            if (tile.HasFlag) throw new InvalidOperationException($"Cannot open tile at ({x}, {y}) as it has a flag.");
+
+            try
+            { 
+                if (tile.IsOpen)
                 {
-                    Tiles[x, y].Open();
+                    tile.OpenNeighbours();
                 }
-                catch(Exception)
+                else
                 {
-                    throw;
+                    tile.Open();
                 }
             }
+            catch(Exception)
+            {
+                throw;
+            }            
         }
 
         private bool IsValidIndex(int x, int y)
