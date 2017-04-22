@@ -42,11 +42,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandKeys.cs" />
+    <Compile Include="Commands\CommandType.cs" />
+    <Compile Include="Commands\EndCommand.cs" />
+    <Compile Include="Commands\FlagCommand.cs" />
+    <Compile Include="Commands\HelpCommand.cs" />
+    <Compile Include="Commands\NewCommand.cs" />
+    <Compile Include="Commands\OpenCommand.cs" />
+    <Compile Include="Commands\QuitCommand.cs" />
+    <Compile Include="Commands\UnflagCommand.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Telvee32.Minesweeper.Common\Telvee32.Minesweeper.Common.csproj">
+      <Project>{466deb63-1a8d-4ec5-a7cf-1001daa78d61}</Project>
+      <Name>Telvee32.Minesweeper.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
