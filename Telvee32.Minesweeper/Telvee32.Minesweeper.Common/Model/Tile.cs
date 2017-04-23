@@ -66,19 +66,16 @@ namespace Telvee32.Minesweeper.Common.Model
         /// </summary>
         public void OpenNeighbours()
         {
-            foreach(var neighbour in Neighbours)
+            var flags = Neighbours.Where(t => t.HasFlag).Count();
+         
+            if(flags == Bombs)
             {
-                if(neighbour.HasBomb && !neighbour.HasFlag)
+                foreach(var neighbour in Neighbours)
                 {
-                    return;
-                }
-            }
-
-            foreach(var neighbour in Neighbours)
-            {
-                if(!neighbour.HasBomb && !neighbour.IsOpen)
-                {
-                    neighbour.Open();
+                    if (!neighbour.IsOpen && !neighbour.HasFlag)
+                    {
+                        neighbour.Open();
+                    }
                 }
             }
         }
