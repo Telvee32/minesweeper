@@ -1,4 +1,4 @@
-﻿namespace Telvee32.Minesweeper.Common.Communication
+﻿namespace Telvee32.Minesweeper.Common.Communication.Request
 {
     public class NewGameRequest
     {

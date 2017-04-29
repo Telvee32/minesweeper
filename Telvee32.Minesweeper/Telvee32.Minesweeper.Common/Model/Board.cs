@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Telvee32.Minesweeper.Common.Communication;
 
 namespace Telvee32.Minesweeper.Common.Model
 {
@@ -96,7 +97,7 @@ namespace Telvee32.Minesweeper.Common.Model
 
         public void FlagTile(int x, int y, bool flag)
         {
-            if (!IsValidIndex(x, y)) throw new IndexOutOfRangeException($"No such tile at ({x}, {y}).");
+            if (!IsValidIndex(x, y)) throw new IndexOutOfRangeException(Messages.NoSuchTile(x, y));
 
             var tile = Tiles[x, y];
 
@@ -104,11 +105,11 @@ namespace Telvee32.Minesweeper.Common.Model
             {
                 if (flag)
                 {
-                    throw new InvalidOperationException($"Cannot flag tile at ({x}. {y}) as it is already open.");
+                    throw new InvalidOperationException(Messages.FlagAlreadyOpen(x, y));
                 }
                 else
                 {
-                    throw new InvalidOperationException($"Cannot unflag tile at ({x}. {y}) as it is already open.");
+                    throw new InvalidOperationException(Messages.UnflagAlreadyOpen(x, y));
                 }
             }
 
@@ -129,11 +130,11 @@ namespace Telvee32.Minesweeper.Common.Model
 
         public void OpenTile(int x, int y)
         {
-            if (!IsValidIndex(x, y)) throw new IndexOutOfRangeException($"No such tile at ({x}, {y}).");
+            if (!IsValidIndex(x, y)) throw new IndexOutOfRangeException(Messages.NoSuchTile(x, y));
 
             var tile = Tiles[x, y];
 
-            if (tile.HasFlag) throw new InvalidOperationException($"Cannot open tile at ({x}, {y}) as it has a flag.");
+            if (tile.HasFlag) throw new InvalidOperationException(Messages.OpenAlreadyFlagged(x, y));
 
             try
             { 
@@ -150,6 +151,13 @@ namespace Telvee32.Minesweeper.Common.Model
             {
                 throw;
             }            
+        }
+
+        public Tile GetTile(int x, int y)
+        {
+            if (!IsValidIndex(x, y)) throw new IndexOutOfRangeException(Messages.NoSuchTile(x, y));
+
+            return Tiles[x, y];
         }
 
         private bool IsValidIndex(int x, int y)

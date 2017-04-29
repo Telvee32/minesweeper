@@ -41,7 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Communication\NewGameRequest.cs" />
+    <Compile Include="Communication\Messages.cs" />
+    <Compile Include="Communication\Request\FlagTileRequest.cs" />
+    <Compile Include="Communication\Request\NewGameRequest.cs" />
+    <Compile Include="Communication\Request\OpenTileRequest.cs" />
+    <Compile Include="Communication\Request\TileStatusRequest.cs" />
+    <Compile Include="Communication\Request\UnflagTileRequest.cs" />
+    <Compile Include="Communication\Response\BaseResponse.cs" />
+    <Compile Include="Communication\Response\FlagTileResponse.cs" />
+    <Compile Include="Communication\Response\OpenTileResponse.cs" />
+    <Compile Include="Communication\Response\TileStatusResponse.cs" />
+    <Compile Include="Communication\Response\UnflagTileResponse.cs" />
     <Compile Include="Exceptions\BombException.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="Model\Board.cs" />

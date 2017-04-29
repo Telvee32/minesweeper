@@ -1,7 +1,7 @@
 ﻿using System;
 using Telvee32.Minesweeper.Common;
-using Telvee32.Minesweeper.Common.Communication;
-using Telvee32.Minesweeper.Common.Exceptions;
+using Telvee32.Minesweeper.Common.Communication.Request;
+using Telvee32.Minesweeper.Common.Communication.Response;
 using Telvee32.Minesweeper.Common.Model;
 using Telvee32.Minesweeper.ConsoleUI.Commands;
 
@@ -54,6 +54,11 @@ namespace Telvee32.Minesweeper.ConsoleUI
             {
                 case EndCommand e:
                 {
+                    if (_gameState == null || _gameState.Board == null)
+                    {
+                        throw new InvalidOperationException("No game active. Please use the new command to start a game.");
+                    }
+
                     _gameState.EndGame();
                     _gameState = null;
 
@@ -67,20 +72,21 @@ namespace Telvee32.Minesweeper.ConsoleUI
                     {
                         throw new InvalidOperationException("No game active. Please use the new command to start a game.");
                     }
+                    
+                    var response = _gameState.FlagTile(new FlagTileRequest
+                    {
+                        XPosition = f.XPos,
+                        YPosition = f.YPos
+                    });
+                    
+                    ClearBoard();
+                    PrintBoard(_gameState.Board);
 
-                    try
+                    if (response.Status == ResponseStatus.Error)
                     {
-                        _gameState.FlagTile(f.XPos, f.YPos, true);
+                        Console.WriteLine();
+                        Console.WriteLine(response.Message);
                     }
-                    catch(Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-                    finally
-                    {
-                        ClearBoard();
-                        PrintBoard(_gameState.Board);
-                    }                    
 
                     break;
                 }
@@ -100,6 +106,7 @@ namespace Telvee32.Minesweeper.ConsoleUI
                     {
                         Console.WriteLine(CommandKeys.CommandDescriptions[h.RequiredCommand]);
                     }
+
                     break;
                 }
                 case NewCommand n:
@@ -107,6 +114,7 @@ namespace Telvee32.Minesweeper.ConsoleUI
                     if ((n.XLength > 100 || n.XLength <= 0) || (n.YLength > 100 || n.YLength <= 0))
                         throw new IndexOutOfRangeException("Board X and Y size must be no less than 1 and no greater than 100.");
                     _gameState = new GameState();
+
                     _gameState.NewGame(new NewGameRequest
                     {
                         XLength = n.XLength,
@@ -125,28 +133,31 @@ namespace Telvee32.Minesweeper.ConsoleUI
                     {
                         throw new InvalidOperationException("No game active. Please use the new command to start a game.");
                     }
+                                        
+                    var response = _gameState.OpenTile(new OpenTileRequest
+                    {
+                        XPosition = o.XPos,
+                        YPosition = o.YPos
+                    });
 
-                    try
-                    {
-                        _gameState.OpenTile(o.XPos, o.YPos);
-                    }
-                    catch (BombException e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-                    finally
-                    {
-                        ClearBoard();
-                        PrintBoard(_gameState.Board);
+                    ClearBoard();
+                    PrintBoard(_gameState.Board);
 
-                        if (_gameState.Status == GameStatus.Fail)
-                        {
-                            _gameState.EndGame();
-                            _gameState = null;
-                            Console.WriteLine("You lose. Type new to start again.");
-                        }                        
+                    if(response.Status == ResponseStatus.Error)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine(response.Message);
                     }
 
+                    if (_gameState.Status == GameStatus.Fail)
+                    {
+                        _gameState.EndGame();
+                        _gameState = null;
+                        Console.WriteLine();
+                        Console.WriteLine(response.Message);
+                        Console.WriteLine("You lose. Type new to start again.");
+                    }                      
+                    
                     break;
                 }
                 case QuitCommand q:
@@ -161,10 +172,20 @@ namespace Telvee32.Minesweeper.ConsoleUI
                         throw new InvalidOperationException("No game active. Please use the new command to start a game.");
                     }
 
-                    _gameState.FlagTile(u.XPos, u.YPos, false);
+                    var response = _gameState.UnflagTile(new UnflagTileRequest
+                    {
+                        XPosition = u.XPos,
+                        YPosition = u.YPos
+                    });
 
                     ClearBoard();
                     PrintBoard(_gameState.Board);
+
+                    if (response.Status == ResponseStatus.Error)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine(response.Message);
+                    }
 
                     break;
                 }
@@ -175,16 +196,28 @@ namespace Telvee32.Minesweeper.ConsoleUI
                         throw new InvalidOperationException("No game active. Please use the new command to start a game.");
                     }
 
-                    var tile = _gameState.Board.Tiles[s.XPos, s.YPos];
-
-                    Console.WriteLine($"Status of tile at ({s.XPos}, {s.YPos}):");
-                    Console.WriteLine($"Open: {tile.IsOpen}");
-                    Console.WriteLine($"Flagged: {tile.HasFlag}");
-
-                    if (tile.IsOpen)
+                    var response = _gameState.TileStatus(new TileStatusRequest
                     {
-                        Console.WriteLine($"Has bomb: {tile.HasBomb}");
-                        Console.WriteLine($"Bombs in surrounding 8 tiles: {tile.Bombs}");
+                        XPosition = s.XPos,
+                        YPosition = s.YPos
+                    });
+
+                    if(response.Status == ResponseStatus.Ok)
+                    {
+                        Console.WriteLine($"Status of tile at ({s.XPos}, {s.YPos}):");
+                        Console.WriteLine($"Open: {response.IsOpen}");
+                        Console.WriteLine($"Flagged: {response.HasFlag}");
+
+                        if (response.IsOpen)
+                        {
+                            Console.WriteLine($"Has bomb: {response.HasBomb}");
+                            Console.WriteLine($"Bombs in surrounding 8 tiles: {response.Bombs}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine(response.Message);
                     }
 
                     break;
@@ -203,7 +236,10 @@ namespace Telvee32.Minesweeper.ConsoleUI
         private void PrintBoard(Board board)
         {
             Console.WriteLine();
-            Console.WriteLine($"Flags: {_gameState.Flags}");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("Flags: ");
+            Console.ResetColor();
+            Console.WriteLine(_gameState.Flags);
             Console.WriteLine();
 
             // top line
@@ -317,11 +353,6 @@ namespace Telvee32.Minesweeper.ConsoleUI
                 Console.Write(new string(' ', Console.BufferWidth - Console.CursorLeft));
             }
             Console.SetCursorPosition(0, 4);
-        }
-
-        private static void ClearLine(int top)
-        {
-            
         }
     }
 }
