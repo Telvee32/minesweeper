@@ -78,6 +78,7 @@ namespace Telvee32.Minesweeper.ConsoleUI
                     }
                     finally
                     {
+                        ClearBoard();
                         PrintBoard(_gameState.Board);
                     }                    
 
@@ -113,6 +114,7 @@ namespace Telvee32.Minesweeper.ConsoleUI
                         Bombs = n.Bombs
                     });
 
+                    ClearBoard();
                     PrintBoard(_gameState.Board);
 
                     break;
@@ -134,6 +136,7 @@ namespace Telvee32.Minesweeper.ConsoleUI
                     }
                     finally
                     {
+                        ClearBoard();
                         PrintBoard(_gameState.Board);
 
                         if (_gameState.Status == GameStatus.Fail)
@@ -160,6 +163,7 @@ namespace Telvee32.Minesweeper.ConsoleUI
 
                     _gameState.FlagTile(u.XPos, u.YPos, false);
 
+                    ClearBoard();
                     PrintBoard(_gameState.Board);
 
                     break;
@@ -300,6 +304,24 @@ namespace Telvee32.Minesweeper.ConsoleUI
             {
                 return tile.HasFlag ? ("F", ConsoleColor.Yellow) : ("#", ConsoleColor.Gray);
             }
+        }
+
+        private void ClearBoard()
+        {
+            int pLeft = Console.CursorLeft;
+            int pTop = Console.CursorTop;
+
+            for (int i = 4; i < pTop; i++)
+            {
+                Console.SetCursorPosition(0, i);
+                Console.Write(new string(' ', Console.BufferWidth - Console.CursorLeft));
+            }
+            Console.SetCursorPosition(0, 4);
+        }
+
+        private static void ClearLine(int top)
+        {
+            
         }
     }
 }
