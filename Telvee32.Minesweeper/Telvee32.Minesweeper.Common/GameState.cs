@@ -32,8 +32,6 @@ namespace Telvee32.Minesweeper.Common
             Board = null;
         }
 
-        // TODO - add tile manipulation methods
-
         public OpenTileResponse OpenTile(OpenTileRequest request)
         {
             var response = new OpenTileResponse

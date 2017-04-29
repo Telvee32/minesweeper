@@ -18,28 +18,52 @@ namespace Telvee32.Minesweeper.ConsoleUI.Commands
         public static Dictionary<CommandType, string> CommandDescriptions = new Dictionary<CommandType, string>
         {
             {
-                CommandType.Flag, "Flag. X, Y."
+                CommandType.Flag, "Puts a flag on a given tile.\n" +
+                "Usage: flag x y\n" +
+                "Parameters:\n" +
+                "\tx: X-coordinate\n" +
+                "\ty: Y-coordinate"
             },
             {
-                CommandType.Unflag, "Unflag. X, Y."
+                CommandType.Unflag, "Removes the flag from a given tile.\n" +
+                "Usage: unflag x y\n" +
+                "Parameters:\n" +
+                "\tx: X-coordinate\n" +
+                "\ty: Y-coordinate"
             },
             {
-                CommandType.Open, "Open. X, Y."
+                CommandType.Open, "Opens a tile.\n" +
+                "Usage: open x y\n" +
+                "Parameters:\n" +
+                "\tx: X-coordinate\n" +
+                "\ty: Y-coordinate"
             },
             {
-                CommandType.New, "New. X, Y, Bombs."
+                CommandType.New, "Starts a new game.\n" +
+                "Usage: new x y bombs\n" +
+                "Parameters:\n" +
+                "\tx: X-coordinate\n" +
+                "\ty: Y-coordinate\n" +
+                "\tbombs: number of bombs on the board"
             },
             {
-                CommandType.End, "End,"
+                CommandType.End, "Ends the game."
             },
             {
-                CommandType.Quit, "Quit."
+                CommandType.Quit, "Quits the game and closes the program."
             },
             {
-                CommandType.Help, "Help. CommandName."
+                CommandType.Help, "Displays information about a command.\n" +
+                "Usage: help command\n" +
+                "Parameters:\n" +
+                "\tcommand: Name of a command"
             },
             {
-                CommandType.Status, "Status. X, Y."
+                CommandType.Status, "Displays the status of a particular tile.\n" +
+                "Usage: status x y\n" +
+                "Parameters:\n" +
+                "\tx: X-coordinate\n" +
+                "\ty: Y-coordinate"
             }
         };
     }
