@@ -63,7 +63,7 @@ namespace Telvee32.Minesweeper.ConsoleUI.Commands
                 "Usage: status x y\n" +
                 "Parameters:\n" +
                 "\tx: X-coordinate\n" +
-                "\ty: Y-coordinate"
+                "\ty: Y-coordinat"
             }
         };
     }
