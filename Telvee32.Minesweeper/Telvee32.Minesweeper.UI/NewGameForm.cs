@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace Telvee32.Minesweeper.UI
 {
-    public partial class Form1 : Form
+    public partial class NewGameForm : Form
     {
-        public Form1()
+        public NewGameForm()
         {
             InitializeComponent();
+        }
+
+        private void NewGame_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
