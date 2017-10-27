@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Remoting.Channels;
 using Eto.Forms;
 using Eto.Drawing;
 using Telvee32.Minesweeper.Common;
@@ -9,15 +10,15 @@ namespace Telvee32.Minesweeper.EtoUI
     {
         public MainForm()
         {
-            Title = "My Eto Form";
-            ClientSize = new Size(400, 350);
+            Title = "C# Mines";
+            ClientSize = new Size(800, 600);
 
             Content = new StackLayout
             {
                 Padding = 10,
                 Items =
                 {
-                    "Hello World!",
+                    "Mines",
                     // add more controls here
                 }
             };
@@ -29,6 +30,36 @@ namespace Telvee32.Minesweeper.EtoUI
             var quitCommand = new Command { MenuText = "Quit", Shortcut = Application.Instance.CommonModifier | Keys.Q };
             quitCommand.Executed += (sender, e) => Application.Instance.Quit();
 
+            var newDialogCommand = new Command
+            {
+                MenuText = "New Game...",
+                Shortcut = Application.Instance.CommonModifier | Keys.N
+            };
+            newDialogCommand.Executed += (sender, e) =>
+            {
+                var dlg = new Dialog
+                {
+                    Content = new Label { Text = "New game label" },
+                    ClientSize = new Size(400, 300)
+                };
+
+				dlg.DefaultButton = new Button { Text = "OK" };
+				dlg.PositiveButtons.Add(dlg.DefaultButton);
+	            dlg.DefaultButton.Click += (dsender, de) =>
+	            {
+		            MessageBox.Show("New");
+	            };
+
+				dlg.AbortButton = new Button { Text = "Cancel" };
+				dlg.NegativeButtons.Add(dlg.AbortButton);
+	            dlg.AbortButton.Click += (dsender, de) =>
+	            {
+		            dlg.Close();
+	            };
+
+				dlg.ShowModal(this);
+            };
+
             var aboutCommand = new Command { MenuText = "About..." };
             aboutCommand.Executed += (sender, e) => MessageBox.Show(this, "About my app...");
 
@@ -38,7 +69,7 @@ namespace Telvee32.Minesweeper.EtoUI
                 Items =
                 {
 					// File submenu
-					new ButtonMenuItem { Text = "&File", Items = { clickMe } },
+					new ButtonMenuItem { Text = "&File", Items = { newDialogCommand } },
 					// new ButtonMenuItem { Text = "&Edit", Items = { /* commands/items */ } },
 					// new ButtonMenuItem { Text = "&View", Items = { /* commands/items */ } },
 				},
