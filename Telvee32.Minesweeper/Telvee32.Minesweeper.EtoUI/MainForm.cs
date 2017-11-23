@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Remoting.Channels;
+using Eto;
 using Eto.Forms;
 using Eto.Drawing;
 using Telvee32.Minesweeper.Common;
@@ -10,8 +11,14 @@ namespace Telvee32.Minesweeper.EtoUI
     {
         public MainForm()
         {
-            Title = "C# Mines";
-            ClientSize = new Size(800, 600);
+            Title = $@"C# Mines ({Platform.ID}, {(EtoEnvironment.Platform.IsMono ? "Mono" : ".NET")}, 
+				{(EtoEnvironment.Platform.IsWindows ? EtoEnvironment.Platform.IsWinRT
+	            ? "WinRT" : "Windows" : EtoEnvironment.Platform.IsMac
+	            ? "Mac" : EtoEnvironment.Platform.IsLinux
+				? "Linux" : EtoEnvironment.Platform.IsUnix
+				? "Unix" : "Unknown")})";
+            MinimumSize = new Size(800, 600);
+			
 
             Content = new StackLayout
             {
@@ -23,10 +30,6 @@ namespace Telvee32.Minesweeper.EtoUI
                 }
             };
 
-            // create a few commands that can be used for the menu and toolbar
-            var clickMe = new Command { MenuText = "Click Me!", ToolBarText = "Click Me!" };
-            clickMe.Executed += (sender, e) => MessageBox.Show(this, "I was clicked!");
-
             var quitCommand = new Command { MenuText = "Quit", Shortcut = Application.Instance.CommonModifier | Keys.Q };
             quitCommand.Executed += (sender, e) => Application.Instance.Quit();
 
@@ -37,9 +40,29 @@ namespace Telvee32.Minesweeper.EtoUI
             };
             newDialogCommand.Executed += (sender, e) =>
             {
-                var dlg = new Dialog
+	            var layout = new TableLayout
+	            {
+		            Spacing = new Size(5, 5),
+		            Padding = new Padding(10, 10, 10, 10),
+					Rows =
+					{
+						new TableRow(
+							new TableCell(new Label { Text = "First Column" }, true),
+							new TableCell(new Label { Text = "Second Column" }, true),
+							new Label { Text = "Third Column" }
+						),
+						new TableRow(
+							new TextBox { Text = "Some Text" },
+							new DropDown { Items = { "Item 1", "Item 2", "Item 3" } },
+							new CheckBox { Text = "A checkbox" }
+						),
+						null
+					}
+	            };
+
+				var dlg = new Dialog
                 {
-                    Content = new Label { Text = "New game label" },
+                    Content = layout,
                     ClientSize = new Size(400, 300)
                 };
 
@@ -81,9 +104,6 @@ namespace Telvee32.Minesweeper.EtoUI
                 QuitItem = quitCommand,
                 AboutItem = aboutCommand
             };
-
-            // create toolbar			
-            ToolBar = new ToolBar { Items = { clickMe } };
 
             var state = new GameState();
         }
